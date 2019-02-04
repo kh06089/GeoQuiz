@@ -1,5 +1,6 @@
 package com.example.geoquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mFalseButton;
     private Button mNextButton;
     private Button mPreviousButton;
+    private Button mCheatButton;
     private TextView mQuestionTextView;
 
     private Question[] mQuestionBank = new Question[]{
@@ -24,6 +26,10 @@ public class QuizActivity extends AppCompatActivity {
     };
     private int mCurrentIndex = 0;
 
+    private void upDateQuestion(){
+        int question = mQuestionBank[mCurrentIndex].getTextResID();
+        mQuestionTextView.setText(question);
+    }
     private void checkAnswer(boolean userPressed){
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
 
@@ -49,8 +55,8 @@ public class QuizActivity extends AppCompatActivity {
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         int question = mQuestionBank[mCurrentIndex].getTextResID();
         mQuestionTextView.setText(question);
-        mTrueButton= findViewById(R.id.true_button);
 
+        mTrueButton= findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,20 +83,31 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex+1)% mQuestionBank.length;
-                int question = mQuestionBank[mCurrentIndex].getTextResID();
-                mQuestionTextView.setText(question);
+//                int question = mQuestionBank[mCurrentIndex].getTextResID();
+//                mQuestionTextView.setText(question);
+                upDateQuestion();
             }
         });
 
-        mPreviousButton = findViewById(R.id.previous_button);
-
-        mPreviousButton.setOnClickListener(new View.OnClickListener() {
+        mCheatButton = findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex = (mCurrentIndex-1)% mQuestionBank.length;
-                int question = mQuestionBank[mCurrentIndex].getTextResID();
-                mQuestionTextView.setText(question);
+                Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(i);
             }
         });
+
+//        mPreviousButton = findViewById(R.id.previous_button);
+//
+//        mPreviousButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mCurrentIndex = (mCurrentIndex-1)% mQuestionBank.length;
+//                int question = mQuestionBank[mCurrentIndex].getTextResID();
+//                mQuestionTextView.setText(question);
+//                  upDateQuestion();
+//            }
+//        });
     }
 }
